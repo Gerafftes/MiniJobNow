@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniJobNow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="navbar-glass">
+                <a href="#" class="logo">MiniJobNow</a>
+                <button class="mobile-menu-button">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="#Funktionen" class="nav-link">Funktionen</a></li>
+                    <li><a href="#Sicherheit" class="nav-link">Sicherheit</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="#Kontaktiere uns" class="btn-nav btn-contact">Kontaktiere uns</a>
+                    <a href="#apply" class="btn-nav btn-apply">Download</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="#" class="logo">MiniJobNow</a>
+            <button class="mobile-menu-close">×</button>
+        </div>
+        <ul class="mobile-nav">
+            <li class="mobile-nav-item"><a href="#Funktionen" class="mobile-nav-link">Funktionen</a></li>
+            <li class="mobile-nav-item"><a href="#Sicherheit" class="mobile-nav-link">Sicherheit</a></li>
+            <li class="mobile-nav-item"><a href="#Kontaktiere uns" class="mobile-nav-link">Kontaktiere uns</a></li>
+        </ul>
+    </div>
+
+    <section class="hero">
+        <div class="hero-bg" id="parallax-hero-bg"></div>
+        <div class="hero-grid">
+            <div class="hero-left">
+                <div class="hero-headline">Finden<br>Helfen<br>Verdienen</div>
+                <div class="hero-sub">Arbeit, neu gedacht - <strong>einfach und lokal.</strong></div>
+                <a href="#apply" class="hero-cta">Download <span
+                        style="font-size:1.2em;vertical-align:-0.1em;">↗</span></a>
+            </div>
+            <div class="hero-right">
+                <div class="iphone-wrapper">
+                    <div class="side-button left-button-1"></div>
+                    <div class="side-button left-button-2"></div>
+                    <div class="side-button left-button-3"></div>
+                    <div class="side-button right-button"></div>
+                    <div class="iphone">
+                        <div class="notch"></div>
+                        <div class="iphone-inner">
+                            <div class="statusbar">
+                                <div class="statusbar-center"></div>
+                            </div>
+                            <div class="header iphone-header-visible"
+                                style="margin-top:40px; margin-bottom:10px; padding: 0 16px 8px 16px;">
+                                <i class="fa fa-bell"></i>
+                                <span style="font-size: 1.3em; font-weight: 700;">MiniJobNow</span>
+                                <i class="fa fa-user-circle" style="font-size: 1.5em;"></i>
+                            </div>
+                            <div class="top-buttons" style="margin-top: 20px;">
+                                <button><i class="fa-solid fa-screwdriver-wrench"></i><br>Ich helfe gern</button>
+                                <button><i class="fa-solid fa-circle-exclamation"></i><br>Hilfe suchen</button>
+                                <button><i class="fa-solid fa-handshake"></i><br>Ich biete an</button>
+                            </div>
+                            <div class="highlight-box" style="margin-top: 18px;">
+                                <strong>Finde spontane Jobs in deiner Nähe.</strong>
+                                Verdiene flexibel Geld, indem du anderen bei kleinen Aufgaben hilfst – vom Einkauf bis
+                                zur Rasenpflege.
+                            </div>
+                            <div class="section-title"
+                                style="margin-top: 18px; margin-bottom: 0px; text-align:left; font-size: 1em; color: var(--secondary-color);">
+                                In deiner Nähe</div>
+                            <div class="job-card">
+                                <div class="job-info">
+                                    <strong>Gassi gehen</strong>
+                                    Heute, 14:00<br>
+                                    10 €
+                                </div>
+                                <button class="job-button">Job annehmen</button>
+                            </div>
+                            <div class="job-card">
+                                <div class="job-info">
+                                    <strong>Einkaufshilfe</strong>
+                                    Heute, 15:00<br>
+                                    12 €
+                                </div>
+                                <button class="job-button">Job annehmen</button>
+                            </div>
+                            <div class="job-card">
+                                <div class="job-info">
+                                    <strong>Paket abholen</strong>
+                                    Heute, 16:30<br>
+                                    8 €
+                                </div>
+                                <button class="job-button">Job annehmen</button>
+                            </div>
+                        </div>
+                        <div class="bottom-bar">
+                            <div><i class="fa fa-home"></i>Start</div>
+                            <div><i class="fa fa-briefcase"></i>Jobs</div>
+                            <div><i class="fa fa-user"></i>Profil</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item animate">
+                <div class="stat-number">68%</div>
+                <div class="stat-label">der Jugendliche jobben</div>
+            </div>
+            <div class="stat-item animate">
+                <div class="stat-number">14%</div>
+                <div class="stat-label">Starten schon mit 13 oder 14 Jahren</div>
+            </div>
+            <div class="stat-item animate">
+                <div class="stat-number">50%</div>
+                <div class="stat-label">erledigen Aufgaben für andere privat</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offerings" id="programs">
+        <h2 class="section-title">Unser Angebot</h2>
+        <div class="offerings-grid">
+            <div class="offering-card animate">
+                <h3 class="offering-title">Spontane Mini-Jobs</h3>
+                <p class="offering-description">Finde spontane Mini-Jobs in deiner Nähe und verdiene dir unkompliziert
+                    etwas dazu.</p>
+                <div class="offering-rate">Flexibel & lokal</div>
+                <div class="offering-type">ab 5 € pro Job</div>
+            </div>
+            <div class="offering-card animate">
+                <h3 class="offering-title">Hilfe finden lassen</h3>
+                <p class="offering-description">Du brauchst Unterstützung im Alltag? Stelle mit wenigen Klicks einen Job
+                    ein.</p>
+                <div class="offering-rate">In 60 Sek. online</div>
+                <div class="offering-type">z. B. Einkauf oder Möbel</div>
+            </div>
+            <div class="offering-card animate">
+                <h3 class="offering-title">Fähigkeiten anbieten</h3>
+                <p class="offering-description">Biete deine Fähigkeiten direkt an – vom Rasenmähen bis zur Nachhilfe.
+                </p>
+                <div class="offering-rate">Job & Preis selbst wählen</div>
+                <div class="offering-type">Preis frei bestimmbar</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+  <h2 class="section-title">So funktioniert’s – <br> in 3 Schritten</h2>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card animate">
+      <div class="icon-wrapper">
+        <i class="fas fa-briefcase fa-2x"></i>
+      </div>
+      <p class="testimonial-quote">Job finden oder anbieten</p>
+      <div class="testimonial-author">
+        Starte in deiner Umgebung – spontan, einfach und flexibel.
+      </div>
+    </div>
+
+    <div class="testimonial-card animate">
+      <div class="icon-wrapper">
+        <i class="fas fa-user-check fa-2x"></i>
+      </div>
+      <p class="testimonial-quote">Helfer*in auswählen & loslegen</p>
+      <div class="testimonial-author">
+        Wähle vertrauenswürdige Personen aus deiner Nähe.
+      </div>
+    </div>
+
+    <div class="testimonial-card animate">
+      <div class="icon-wrapper">
+        <i class="fas fa-check-circle fa-2x"></i>
+      </div>
+      <p class="testimonial-quote">Abschließen & bewerten</p>
+      <div class="testimonial-author">
+        Sicher bezahlt – transparent und fair bewertet.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="technology" id="technology">
+  <h2 class="section-title">Sicherheit</h2>
+  <div class="tech-grid">
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3 class="tech-title">Treuhand-Zahlungssystem</h3>
+      <p class="tech-description">Zahlungen werden sicher hinterlegt und erst nach Abschluss freigegeben – fair für beide Seiten.</p>
+    </div>
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fas fa-user-lock"></i></div>
+      <h3 class="tech-title">Zwei-Faktor-Authentifizierung (2FA)</h3>
+      <p class="tech-description">Mehr Schutz für sensible Konten: Login nur mit zusätzlichem Code oder Hardware-Schlüssel.</p>
+    </div>
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fas fa-shield-virus"></i></div>
+      <h3 class="tech-title">Echtzeit-Angriffsschutz</h3>
+      <p class="tech-description">Automatische Erkennung und Blockierung von Brute-Force-, Session- und CSRF-Angriffen – rund um die Uhr.</p>
+    </div>
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fas fa-lock"></i></div>
+      <h3 class="tech-title">Verschlüsselte Daten</h3>
+      <p class="tech-description">Alle Daten sind AES-verschlüsselt. Aktionen werden sicher geloggt und sind jederzeit nachvollziehbar.</p>
+    </div>
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fas fa-eye"></i></div>
+      <h3 class="tech-title">Transparente Sicherheit</h3>
+      <p class="tech-description">Jede sicherheitsrelevante Aktion wird dokumentiert – für maximale Nachvollziehbarkeit.</p>
+    </div>
+    <div class="tech-card fade-up">
+      <div class="tech-icon"><i class="fab fa-github"></i></div>
+      <h3 class="tech-title">Open Source & GitHub</h3>
+      <p class="tech-description">Unsere gesamte Codebasis ist offen auf GitHub einsehbar – für Vertrauen, Transparenz und Mitgestaltung.</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">Impressum </a></li>
+                    <li><a href="#" class="footer-link">Datenschutz </a></li>
+                    <li><a href="#" class="footer-link">Kontakt </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 MiniJobNow</p>
+            <h6>Version 1.0</h6>
+        </div>
+    </footer>
+</body>
+
+</html>
