@@ -16,15 +16,6 @@ function updateParallax() {
 }
 updateParallax();
 
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    if (window.scrollY > window.innerHeight * 0.8) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
-
 // Intersection Observer for animations
 const observerOptions = {
     threshold: 0.1
@@ -176,28 +167,76 @@ document.querySelectorAll('.offering-card, .testimonial-card').forEach(item => {
     observer.observe(item);
 });
 
-// Mobile menu functionality
+// Enhanced Mobile Menu Functionality
 const mobileMenuButton = document.querySelector('.mobile-menu-button');
 const mobileMenu = document.querySelector('.mobile-menu');
 const mobileMenuClose = document.querySelector('.mobile-menu-close');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+let isMenuOpen = false;
+
+function toggleMenu(open) {
+    isMenuOpen = open;
+    if (open) {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Animate menu items
+        mobileNavLinks.forEach((link, index) => {
+            link.style.transitionDelay = `${0.1 + index * 0.1}s`;
+        });
+    } else {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+        // Reset transition delays
+        mobileNavLinks.forEach(link => {
+            link.style.transitionDelay = '0s';
+        });
+    }
+}
 
 mobileMenuButton.addEventListener('click', () => {
-    mobileMenu.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    toggleMenu(true);
 });
 
 mobileMenuClose.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-    document.body.style.overflow = '';
+    toggleMenu(false);
 });
 
+// Close menu when clicking outside
+mobileMenu.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+        toggleMenu(false);
+    }
+});
+
+// Close menu when pressing Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen) {
+        toggleMenu(false);
+    }
+});
+
+// Close menu when clicking a link
 mobileNavLinks.forEach(link => {
     link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
+        toggleMenu(false);
     });
 });
+
+// Header scroll effect
+const header = document.querySelector('.header');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight * 0.9) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+// Initialize header state
+if (window.scrollY > window.innerHeight * 0.7) {
+    header.classList.add('scrolled');
+}
 
 // Additional animations
 const fadeElements = document.querySelectorAll('.fade-up');
