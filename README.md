@@ -17,7 +17,7 @@
 
 <h2>📸 Screenshots</h2>
 <p><em>(Hier Screenshots deiner App hinzufügen, um den Nutzern einen visuellen Eindruck zu geben.)</em></p>
-![alt text](app.png)
+![alt text](app.PNG)
 
 <hr>
 
