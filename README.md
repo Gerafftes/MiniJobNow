@@ -17,7 +17,6 @@
 
 <h2>📸 Screenshots</h2>
 <p><em>(Hier Screenshots deiner App hinzufügen, um den Nutzern einen visuellen Eindruck zu geben.)</em></p>
-![Image](https://github.com/user-attachments/assets/a614cd81-2760-4067-8c1e-508fefe68fa3)
 
 <hr>
 
