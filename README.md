@@ -18,8 +18,7 @@
 <h2>📸 Screenshots</h2>
 <p><em>(Hier Screenshots deiner App hinzufügen, um den Nutzern einen visuellen Eindruck zu geben.)</em></p>
 
-![Jobübersicht](app.jpg)
-<img src="app.jpg" alt="Jobübersicht" width="40"/>
+<img src="app.jpg" alt="Jobübersicht" width="400"/>
 <hr>
 
 <h2>🛠️ Tech Stack</h2>
