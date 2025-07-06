@@ -16,7 +16,7 @@
 <hr>
 
 <h2>📸 Screenshots</h2>
-<img src="bilder/app.jpg" alt="Jobübersicht" width="400"/>
+<img src="bilder/app.jpg" alt="Jobübersicht" width="300"/>
 <hr>
 
 <h2>🛠️ Tech Stack</h2>
