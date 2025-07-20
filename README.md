@@ -32,4 +32,4 @@
 
 <h3>📱 Mobile App</h3>
 <pre><code>
-kommt noch
+Im appstore
