@@ -54,167 +54,197 @@ class _HomeScreenState extends State<HomeScreen> {
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'SF Pro'),
       ),
       child: Scaffold(
-      backgroundColor: bgColor,
-      extendBody: true,
-      appBar: AppBar(
         backgroundColor: bgColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.notifications_none,
-            color: Colors.white,
-            size: 28,
+        extendBody: true,
+        appBar: AppBar(
+          backgroundColor: bgColor,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.notifications_none,
+              color: Colors.white,
+              size: 28,
+            ),
+            onPressed: () => setState(() => _bottomNavIndex = 3),
           ),
-          onPressed: () => setState(() => _bottomNavIndex = 3),
-        ),
-        title: const Text(
-          'MiniJobNow',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-            onTap: () => setState(() => _bottomNavIndex = 2),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(
-                backgroundColor: cardColor,
-                radius: 20,
-                child: const Icon(Icons.person, color: Colors.white, size: 26),
-              ),
+          title: const Text(
+            'MiniJobNow',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
             ),
           ),
-        ],
-      ),
-      body: IndexedStack(
-        index: _bottomNavIndex,
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: 92,
-                left: 16.0,
-                right: 16.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
-                  // Drei große Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _HomeActionButton(
-                        iconPath: 'assets/icons/Artboard 2.svg',
-                        label: 'Ich helfe\ngerne',
-                        color: selectedIndex == 0 ? cardColorActive : cardColor,
-                        onTap: () => setState(() => selectedIndex = 0),
-                        isSelected: selectedIndex == 0,
-                      ),
-                      _HomeActionButton(
-                        iconPath: 'assets/icons/Artboard 1.svg',
-                        label: 'Hilfe\nsuchen',
-                        color: selectedIndex == 1 ? cardColorActive : cardColor,
-                        onTap: () => setState(() => selectedIndex = 1),
-                        isSelected: selectedIndex == 1,
-                      ),
-                      _HomeActionButton(
-                        iconPath: 'assets/icons/Artboard 3.svg',
-                        label: 'Ich biete\nan',
-                        color: selectedIndex == 2 ? cardColorActive : cardColor,
-                        onTap: () => setState(() => selectedIndex = 2),
-                        isSelected: selectedIndex == 2,
-                      ),
-                    ],
+          centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () => setState(() => _bottomNavIndex = 2),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: CircleAvatar(
+                  backgroundColor: cardColor,
+                  radius: 20,
+                  child: const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 26,
                   ),
-                  const SizedBox(height: 28),
-                  content,
-                  const SizedBox(height: 24),
-                ],
+                ),
               ),
             ),
-          ),
-          Center(
-            child: Text(
-              'Support',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              'Profil',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              'Notifications',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 4),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+          ],
+        ),
+        body: IndexedStack(
+          index: _bottomNavIndex,
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 92,
+                  left: 16.0,
+                  right: 16.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    // Drei große Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _HomeActionButton(
+                          iconPath: 'assets/icons/Artboard 2.svg',
+                          label: 'Ich helfe\ngerne',
+                          color:
+                              selectedIndex == 0 ? cardColorActive : cardColor,
+                          onTap: () => setState(() => selectedIndex = 0),
+                          isSelected: selectedIndex == 0,
+                        ),
+                        _HomeActionButton(
+                          iconPath: 'assets/icons/Artboard 1.svg',
+                          label: 'Hilfe\nsuchen',
+                          color:
+                              selectedIndex == 1 ? cardColorActive : cardColor,
+                          onTap: () => setState(() => selectedIndex = 1),
+                          isSelected: selectedIndex == 1,
+                        ),
+                        _HomeActionButton(
+                          iconPath: 'assets/icons/Artboard 3.svg',
+                          label: 'Ich biete\nan',
+                          color:
+                              selectedIndex == 2 ? cardColorActive : cardColor,
+                          onTap: () => setState(() => selectedIndex = 2),
+                          isSelected: selectedIndex == 2,
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 28),
+                    content,
+                    const SizedBox(height: 24),
                   ],
                 ),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                  ),
-                  child: BottomNavigationBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    selectedItemColor: Colors.white,
-                    unselectedItemColor: const Color.fromARGB(153, 255, 255, 255),
-                    showSelectedLabels: true,
-                    showUnselectedLabels: true,
-                    items: const [
-                      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Start'),
-                      BottomNavigationBarItem(icon: Icon(Icons.headset), label: 'Support'),
-                      BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profil'),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Support',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Profil',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Notifications',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 4),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(32),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
                     ],
-                    currentIndex: _bottomNavIndex < 3 ? _bottomNavIndex : _mainTabIndex,
-                    onTap: (index) => setState(() {
-                      _bottomNavIndex = index;
-                      if (index < 3) _mainTabIndex = index;
-                    }),
-                    type: BottomNavigationBarType.fixed,
+                  ),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: BottomNavigationBar(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      selectedItemColor: Colors.white,
+                      unselectedItemColor: const Color.fromARGB(
+                        153,
+                        255,
+                        255,
+                        255,
+                      ),
+                      showSelectedLabels: true,
+                      showUnselectedLabels: true,
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Start',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.headset),
+                          label: 'Support',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.person_outline),
+                          label: 'Profil',
+                        ),
+                      ],
+                      currentIndex:
+                          _bottomNavIndex < 3 ? _bottomNavIndex : _mainTabIndex,
+                      onTap: (index) {
+                        setState(() {
+                          if (index == 0 && _bottomNavIndex == 0) {
+                            // Bereits auf Start, aber evtl. nicht auf "Ich helfe gerne"
+                            selectedIndex = 0;
+                          } else {
+                            _bottomNavIndex = index;
+                            if (index < 3) _mainTabIndex = index;
+                          }
+                        });
+                      },
+                      type: BottomNavigationBarType.fixed,
+                    ),
                   ),
                 ),
               ),
@@ -222,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -342,13 +372,243 @@ class _IchHelfeGernContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 28),
-        const Text(
-          'In deiner Nähe',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'In deiner Nähe',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: const Color(0xFF232323),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
+                  ),
+                  builder: (context) {
+                    double distance = 5;
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Filter',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: const Color(0xFF276EFF),
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: const Text(
+                                  'Speichern',
+                                  style: TextStyle(
+                                    color: Color(0xFF276EFF),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Distanz',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          StatefulBuilder(
+                            builder: (context, setModalState) {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    flex: 9,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 12),
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor: const Color(0xFF276EFF),
+                                          inactiveTrackColor: Colors.white24,
+                                          trackHeight: 4.0,
+                                          thumbColor: const Color(0xFF276EFF),
+                                          overlayColor: const Color(0x33276EFF),
+                                          valueIndicatorColor: const Color(0xFF276EFF),
+                                          showValueIndicator: ShowValueIndicator.always,
+                                          tickMarkShape: const RoundSliderTickMarkShape(
+                                            tickMarkRadius: 3,
+                                          ),
+                                          activeTickMarkColor: Colors.white,
+                                          inactiveTickMarkColor: Colors.white38,
+                                        ),
+                                        child: Slider(
+                                          min: 1,
+                                          max: 15,
+                                          label: '${distance.round()} km',
+                                          value: distance,
+                                          onChanged: (value) {
+                                            setModalState(() {
+                                              distance = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  SizedBox(
+                                    width: 50,
+                                    child: Text(
+                                      '${distance.round()} km',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Kategorie',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1A1A1A),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Alle',
+                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                                const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Sortieren nach',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF1A1A1A),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Neu nach Alt',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF1A1A1A),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Alt nach Neu',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Color(0xFF276EFF)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              child: const Text(
+                                'Kartenansicht',
+                                style: TextStyle(color: Color(0xFF276EFF)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.tune, color: Colors.white, size: 28),
+              style: IconButton.styleFrom(
+                backgroundColor: cardColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.all(8),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         _JobCard(
@@ -577,10 +837,11 @@ class _JobCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 12,
                 ),
+                textStyle: const TextStyle(fontWeight: FontWeight.bold),
               ),
               onPressed: () {},
               child: const Text('Job annehmen'),
