@@ -14,11 +14,14 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   int _bottomNavIndex = 0;
   int _mainTabIndex = 0;
-  bool _isDarkMode = true;
+  String _themeMode = 'auto'; // 'light', 'auto', 'dark'
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = _isDarkMode;
+    final bool isDark =
+        _themeMode == 'auto'
+            ? MediaQuery.of(context).platformBrightness == Brightness.dark
+            : _themeMode == 'dark';
     final Color bgColor = isDark ? Colors.black : const Color(0xFFE6E6E6);
     final Color cardColor =
         isDark
@@ -29,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final Color borderColor =
         isDark
             ? const Color.fromRGBO(255, 255, 255, 0.18)
-            : const Color.fromRGBO(0, 0, 0, 0.08);
+            : const Color(0xFFCCCCCC);
     final Color secondaryText =
         isDark
             ? const Color.fromRGBO(255, 255, 255, 0.7)
@@ -57,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           jobButtonColor: jobButtonColor,
           timeTextColor: timeTextColor,
           filterIconColor: bellIconColor,
+          themeMode: _themeMode,
         );
         break;
       case 1:
@@ -83,229 +87,292 @@ class _HomeScreenState extends State<HomeScreen> {
       data: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'SF Pro'),
       ),
-      child: Scaffold(
-        backgroundColor: bgColor,
-        extendBody: true,
-        appBar: AppBar(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        color: bgColor,
+        child: Scaffold(
           backgroundColor: bgColor,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.notifications_none,
-              color: bellIconColor,
-              size: 28,
+          extendBody: true,
+          appBar: AppBar(
+            backgroundColor: bgColor,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.notifications_none,
+                color: bellIconColor,
+                size: 28,
+              ),
+              onPressed: () => setState(() => _bottomNavIndex = 3),
             ),
-            onPressed: () => setState(() => _bottomNavIndex = 3),
-          ),
-          title: Text(
-            'MiniJobNow',
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
+            title: Text(
+              'MiniJobNow',
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+              ),
             ),
-          ),
-          centerTitle: true,
-          actions: [
-            GestureDetector(
-              onTap: () => setState(() => _bottomNavIndex = 2),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: CircleAvatar(
-                  backgroundColor: cardColor,
-                  radius: 20,
-                  child: const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 26,
+            centerTitle: true,
+            actions: [
+              GestureDetector(
+                onTap: () => setState(() => _bottomNavIndex = 2),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
+                    backgroundColor: cardColor,
+                    radius: 20,
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 26,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        body: IndexedStack(
-          index: _bottomNavIndex,
-          children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 92,
-                  left: 16.0,
-                  right: 16.0,
+            ],
+          ),
+          body: IndexedStack(
+            index: _bottomNavIndex,
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 92,
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      // Drei große Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _HomeActionButton(
+                            iconPath: 'assets/icons/Artboard 2.svg',
+                            label: 'Ich helfe\ngerne',
+                            color:
+                                selectedIndex == 0
+                                    ? cardColorActive
+                                    : cardColor,
+                            onTap: () => setState(() => selectedIndex = 0),
+                            isSelected: selectedIndex == 0,
+                            textColor: textColor,
+                            iconColor: homeActionIconColor,
+                          ),
+                          _HomeActionButton(
+                            iconPath: 'assets/icons/Artboard 1.svg',
+                            label: 'Hilfe\nsuchen',
+                            color:
+                                selectedIndex == 1
+                                    ? cardColorActive
+                                    : cardColor,
+                            onTap: () => setState(() => selectedIndex = 1),
+                            isSelected: selectedIndex == 1,
+                            textColor: textColor,
+                            iconColor: homeActionIconColor,
+                          ),
+                          _HomeActionButton(
+                            iconPath: 'assets/icons/Artboard 3.svg',
+                            label: 'Ich biete\nan',
+                            color:
+                                selectedIndex == 2
+                                    ? cardColorActive
+                                    : cardColor,
+                            onTap: () => setState(() => selectedIndex = 2),
+                            isSelected: selectedIndex == 2,
+                            textColor: textColor,
+                            iconColor: homeActionIconColor,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 28),
+                      content,
+                      const SizedBox(height: 24),
+                    ],
+                  ),
                 ),
+              ),
+              Center(
+                child: Text(
+                  'Support',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 16),
-                    // Drei große Buttons
+                    Text(
+                      'Profil',
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _HomeActionButton(
-                          iconPath: 'assets/icons/Artboard 2.svg',
-                          label: 'Ich helfe\ngerne',
-                          color:
-                              selectedIndex == 0 ? cardColorActive : cardColor,
-                          onTap: () => setState(() => selectedIndex = 0),
-                          isSelected: selectedIndex == 0,
-                          textColor: textColor,
-                          iconColor: homeActionIconColor,
+                        Text(
+                          'Theme',
+                          style: TextStyle(color: textColor, fontSize: 16),
                         ),
-                        _HomeActionButton(
-                          iconPath: 'assets/icons/Artboard 1.svg',
-                          label: 'Hilfe\nsuchen',
-                          color:
-                              selectedIndex == 1 ? cardColorActive : cardColor,
-                          onTap: () => setState(() => selectedIndex = 1),
-                          isSelected: selectedIndex == 1,
-                          textColor: textColor,
-                          iconColor: homeActionIconColor,
-                        ),
-                        _HomeActionButton(
-                          iconPath: 'assets/icons/Artboard 3.svg',
-                          label: 'Ich biete\nan',
-                          color:
-                              selectedIndex == 2 ? cardColorActive : cardColor,
-                          onTap: () => setState(() => selectedIndex = 2),
-                          isSelected: selectedIndex == 2,
-                          textColor: textColor,
-                          iconColor: homeActionIconColor,
+                        const SizedBox(width: 16),
+                        SegmentedButton<String>(
+                          segments: const [
+                            ButtonSegment<String>(
+                              value: 'light',
+                              label: Text('Light'),
+                            ),
+                            ButtonSegment<String>(
+                              value: 'auto',
+                              label: Text('Auto'),
+                            ),
+                            ButtonSegment<String>(
+                              value: 'dark',
+                              label: Text('Dark'),
+                            ),
+                          ],
+                          selected: {_themeMode},
+                          onSelectionChanged: (Set<String> newSelection) {
+                            setState(() {
+                              _themeMode = newSelection.first;
+                            });
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>((
+                                  Set<MaterialState> states,
+                                ) {
+                                  if (states.contains(MaterialState.selected)) {
+                                    return const Color(0xFF007AFF);
+                                  }
+                                  return cardColor;
+                                }),
+                            foregroundColor:
+                                MaterialStateProperty.resolveWith<Color>((
+                                  Set<MaterialState> states,
+                                ) {
+                                  if (states.contains(MaterialState.selected)) {
+                                    return Colors.white;
+                                  }
+                                  return textColor;
+                                }),
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 28),
-                    content,
-                    const SizedBox(height: 24),
                   ],
                 ),
               ),
-            ),
-            Center(
-              child: Text(
-                'Support',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Text(
+                  'Notifications',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Profil',
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+            ],
+          ),
+          bottomNavigationBar: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: isDark ? 5 : 3,
+                    sigmaY: isDark ? 5 : 3,
                   ),
-                  const SizedBox(height: 32),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Dark Mode',
-                        style: TextStyle(color: textColor, fontSize: 16),
-                      ),
-                      const SizedBox(width: 16),
-                      Switch(
-                        value: _isDarkMode,
-                        onChanged: (val) {
-                          setState(() {
-                            _isDarkMode = val;
-                          });
-                        },
-                        activeColor: Colors.blue,
-                        inactiveThumbColor: Colors.grey,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Text(
-                'Notifications',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 4),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(32),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                    ),
-                    child: BottomNavigationBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      selectedItemColor: Colors.white,
-                      unselectedItemColor: const Color.fromARGB(
-                        153,
-                        255,
-                        255,
-                        255,
-                      ),
-                      showSelectedLabels: true,
-                      showUnselectedLabels: true,
-                      items: const [
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.home),
-                          label: 'Start',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.headset),
-                          label: 'Support',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.person_outline),
-                          label: 'Profil',
+                  child: Container(
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color:
+                          isDark
+                              ? Colors.white.withOpacity(0.3)
+                              : const Color(0xFFCCCCCC).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
                         ),
                       ],
-                      currentIndex:
-                          _bottomNavIndex < 3 ? _bottomNavIndex : _mainTabIndex,
-                      onTap: (index) {
-                        setState(() {
-                          if (index == 0 && _bottomNavIndex == 0) {
-                            // Bereits auf Start, aber evtl. nicht auf "Ich helfe gerne"
-                            selectedIndex = 0;
-                          } else {
-                            _bottomNavIndex = index;
-                            if (index < 3) _mainTabIndex = index;
-                          }
-                        });
-                      },
-                      type: BottomNavigationBarType.fixed,
+                    ),
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        canvasColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        // Farben für die BottomNavigationBar anpassen
+                        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                          selectedItemColor:
+                              isDark ? Colors.white : const Color(0xFF000000),
+                          unselectedItemColor:
+                              isDark
+                                  ? const Color.fromARGB(153, 255, 255, 255)
+                                  : const Color(0xFF333333),
+                          selectedLabelStyle: TextStyle(
+                            color:
+                                isDark ? Colors.white : const Color(0xFF000000),
+                          ),
+                          unselectedLabelStyle: TextStyle(
+                            color:
+                                isDark
+                                    ? const Color.fromARGB(153, 255, 255, 255)
+                                    : const Color(0xFF333333),
+                          ),
+                        ),
+                      ),
+                      child: BottomNavigationBar(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        // Farben werden jetzt über das Theme gesetzt
+                        showSelectedLabels: true,
+                        showUnselectedLabels: true,
+                        items: const [
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.home),
+                            label: 'Start',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.headset),
+                            label: 'Support',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline),
+                            label: 'Profil',
+                          ),
+                        ],
+                        currentIndex:
+                            _bottomNavIndex < 3
+                                ? _bottomNavIndex
+                                : _mainTabIndex,
+                        onTap: (index) {
+                          setState(() {
+                            if (index == 0 && _bottomNavIndex == 0) {
+                              // Bereits auf Start, aber evtl. nicht auf "Ich helfe gerne"
+                              selectedIndex = 0;
+                            } else {
+                              _bottomNavIndex = index;
+                              if (index < 3) _mainTabIndex = index;
+                            }
+                          });
+                        },
+                        type: BottomNavigationBarType.fixed,
+                      ),
                     ),
                   ),
                 ),
@@ -344,7 +411,7 @@ class _HomeActionButton extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
-          margin: const EdgeInsets.symmetric(horizontal: 6),
+          margin: _getMargin(context),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: color,
@@ -385,6 +452,23 @@ class _HomeActionButton extends StatelessWidget {
       ),
     );
   }
+
+  EdgeInsets _getMargin(BuildContext context) {
+    // Hole die Position des Buttons im Row-Widget
+    final parent = context.findAncestorWidgetOfExactType<Row>();
+    if (parent != null && parent.children.length == 3) {
+      final idx = parent.children.indexOf(this);
+      if (idx == 0) {
+        // Erster Button: kein linker Margin
+        return const EdgeInsets.only(right: 6);
+      } else if (idx == 2) {
+        // Letzter Button: kein rechter Margin
+        return const EdgeInsets.only(left: 6);
+      }
+    }
+    // Mittlerer oder Fallback
+    return const EdgeInsets.symmetric(horizontal: 6);
+  }
 }
 
 // --- Seiteninhalte ---
@@ -397,6 +481,7 @@ class _IchHelfeGernContent extends StatelessWidget {
   final Color jobButtonColor;
   final Color timeTextColor;
   final Color filterIconColor;
+  final String themeMode;
   const _IchHelfeGernContent({
     required this.cardColor,
     required this.secondaryText,
@@ -406,10 +491,15 @@ class _IchHelfeGernContent extends StatelessWidget {
     required this.jobButtonColor,
     required this.timeTextColor,
     required this.filterIconColor,
+    required this.themeMode,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark =
+        themeMode == 'auto'
+            ? MediaQuery.of(context).platformBrightness == Brightness.dark
+            : themeMode == 'dark';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -458,10 +548,18 @@ class _IchHelfeGernContent extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
+                final bool isDark =
+                    themeMode == 'auto'
+                        ? MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark
+                        : themeMode == 'dark';
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  backgroundColor: const Color(0xFF232323),
+                  backgroundColor:
+                      isDark
+                          ? const Color(0xFF0D0D0D)
+                          : const Color(0xFFE6E6E6),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
@@ -485,9 +583,13 @@ class _IchHelfeGernContent extends StatelessWidget {
                     ];
                     return StatefulBuilder(
                       builder: (context, setModalState) {
+                        final screenHeight = MediaQuery.of(context).size.height;
+                        final screenWidth = MediaQuery.of(context).size.width;
                         return Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          padding: const EdgeInsets.all(24),
+                          height: MediaQuery.of(context).size.height * 0.55,
+                          padding: EdgeInsets.all(
+                            screenWidth * 0.06,
+                          ), // ~24px on 400px width
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -495,11 +597,16 @@ class _IchHelfeGernContent extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Filter',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                      color:
+                                          isDark
+                                              ? Colors.white
+                                              : const Color(0xFF000000),
+                                      fontSize:
+                                          screenWidth *
+                                          0.05, // ~20px on 400px width
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -507,62 +614,87 @@ class _IchHelfeGernContent extends StatelessWidget {
                                     onPressed:
                                         () => Navigator.of(context).pop(),
                                     style: TextButton.styleFrom(
-                                      foregroundColor: const Color(0xFF276EFF),
+                                      foregroundColor: const Color(0xFF007AFF),
                                       padding: EdgeInsets.zero,
                                       minimumSize: const Size(0, 0),
                                       tapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                     ),
-                                    child: const Text(
+                                    child: Text(
                                       'Speichern',
                                       style: TextStyle(
-                                        color: Color(0xFF276EFF),
-                                        fontSize: 16,
+                                        color: Color(0xFF007AFF),
+                                        fontSize:
+                                            screenWidth *
+                                            0.04, // ~16px on 400px width
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 24),
+                              SizedBox(
+                                height: screenHeight * 0.03,
+                              ), // ~24px on 800px height
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Distanz',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
+                                    color:
+                                        isDark
+                                            ? Colors.white
+                                            : const Color(0xFF000000),
+                                    fontSize:
+                                        screenWidth *
+                                        0.04, // ~16px on 400px width
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: screenHeight * 0.02,
+                              ), // ~16px on 800px height
                               Row(
                                 children: [
                                   Expanded(
                                     flex: 9,
                                     child: Padding(
-                                      padding: EdgeInsets.only(right: 12),
+                                      padding: EdgeInsets.only(
+                                        right: screenWidth * 0.03,
+                                      ), // ~12px on 400px width
                                       child: SliderTheme(
                                         data: SliderTheme.of(context).copyWith(
                                           activeTrackColor: const Color(
-                                            0xFF276EFF,
+                                            0xFF007AFF,
                                           ),
-                                          inactiveTrackColor: Colors.white24,
-                                          trackHeight: 4.0,
-                                          thumbColor: const Color(0xFF276EFF),
-                                          overlayColor: const Color(0x33276EFF),
+                                          inactiveTrackColor:
+                                              isDark
+                                                  ? Colors.white24
+                                                  : const Color(0xFFB3B3B3),
+                                          trackHeight:
+                                              screenHeight *
+                                              0.005, // ~4px on 800px height
+                                          thumbColor: const Color(0xFF007AFF),
+                                          overlayColor: const Color(0x33007AFF),
                                           valueIndicatorColor: const Color(
-                                            0xFF276EFF,
+                                            0xFF007AFF,
                                           ),
                                           showValueIndicator:
                                               ShowValueIndicator.always,
-                                          tickMarkShape:
-                                              const RoundSliderTickMarkShape(
-                                                tickMarkRadius: 3,
-                                              ),
-                                          activeTickMarkColor: Colors.white,
-                                          inactiveTickMarkColor: Colors.white38,
+                                          tickMarkShape: RoundSliderTickMarkShape(
+                                            tickMarkRadius:
+                                                screenHeight *
+                                                0.004, // ~3px on 800px height
+                                          ),
+                                          activeTickMarkColor:
+                                              isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF000000),
+                                          inactiveTickMarkColor:
+                                              isDark
+                                                  ? Colors.white38
+                                                  : const Color(0xFF666666),
                                         ),
                                         child: Slider(
                                           min: 1,
@@ -578,34 +710,52 @@ class _IchHelfeGernContent extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
                                   SizedBox(
-                                    width: 50,
+                                    width: screenWidth * 0.03,
+                                  ), // ~12px on 400px width
+                                  SizedBox(
+                                    width:
+                                        screenWidth *
+                                        0.125, // ~50px on 400px width
                                     child: Text(
                                       '${distance.round()} km',
                                       textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                        color: Colors.white,
+                                      style: TextStyle(
+                                        color:
+                                            isDark
+                                                ? Colors.white
+                                                : const Color(0xFF000000),
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                        fontSize:
+                                            screenWidth *
+                                            0.04, // ~16px on 400px width
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: screenHeight * 0.015,
+                              ), // ~12px on 800px height
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Kategorie',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
+                                    color:
+                                        isDark
+                                            ? Colors.white
+                                            : const Color(0xFF000000),
+                                    fontSize:
+                                        screenWidth *
+                                        0.04, // ~16px on 400px width
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(
+                                height: screenHeight * 0.01,
+                              ), // ~8px on 800px height
                               GestureDetector(
                                 onTap: () {
                                   setModalState(
@@ -614,13 +764,22 @@ class _IchHelfeGernContent extends StatelessWidget {
                                 },
                                 child: Container(
                                   width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        screenWidth *
+                                        0.04, // ~16px on 400px width
+                                    vertical:
+                                        screenHeight *
+                                        0.015, // ~12px on 800px height
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF1A1A1A),
-                                    borderRadius: BorderRadius.circular(15),
+                                    color:
+                                        isDark
+                                            ? const Color(0xFF1A1A1A)
+                                            : const Color(0xFFF2F2F2),
+                                    borderRadius: BorderRadius.circular(
+                                      screenWidth * 0.0375,
+                                    ), // ~15px on 400px width
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -628,9 +787,14 @@ class _IchHelfeGernContent extends StatelessWidget {
                                     children: [
                                       Text(
                                         selectedCategory,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
+                                        style: TextStyle(
+                                          color:
+                                              isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF000000),
+                                          fontSize:
+                                              screenWidth *
+                                              0.04, // ~16px on 400px width
                                         ),
                                       ),
                                       TweenAnimationBuilder<double>(
@@ -647,9 +811,12 @@ class _IchHelfeGernContent extends StatelessWidget {
                                                   angle: turns * 2 * math.pi,
                                                   child: child,
                                                 ),
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.keyboard_arrow_down,
-                                          color: Colors.white,
+                                          color:
+                                              isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF000000),
                                         ),
                                       ),
                                     ],
@@ -657,18 +824,28 @@ class _IchHelfeGernContent extends StatelessWidget {
                                 ),
                               ),
                               if (isCategoryOpen) ...[
-                                const SizedBox(height: 8),
+                                SizedBox(
+                                  height: screenHeight * 0.01,
+                                ), // ~8px on 800px height
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF1A1A1A),
-                                    borderRadius: BorderRadius.circular(15),
+                                    color:
+                                        isDark
+                                            ? const Color(0xFF1A1A1A)
+                                            : const Color(0xFFF2F2F2),
+                                    borderRadius: BorderRadius.circular(
+                                      screenWidth * 0.0375,
+                                    ), // ~15px on 400px width
                                   ),
                                   child: ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: categories.length,
                                     separatorBuilder:
-                                        (context, idx) => const Divider(
-                                          color: Colors.white12,
+                                        (context, idx) => Divider(
+                                          color:
+                                              isDark
+                                                  ? Colors.white12
+                                                  : const Color(0xFFCCCCCC),
                                           height: 1,
                                         ),
                                     itemBuilder: (context, idx) {
@@ -682,9 +859,14 @@ class _IchHelfeGernContent extends StatelessWidget {
                                         },
                                         title: Text(
                                           cat,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
+                                          style: TextStyle(
+                                            color:
+                                                isDark
+                                                    ? Colors.white
+                                                    : const Color(0xFF000000),
+                                            fontSize:
+                                                screenWidth *
+                                                0.04, // ~16px on 400px width
                                           ),
                                         ),
                                         trailing: GestureDetector(
@@ -695,30 +877,45 @@ class _IchHelfeGernContent extends StatelessWidget {
                                             });
                                           },
                                           child: Container(
-                                            width: 24,
-                                            height: 24,
+                                            width:
+                                                screenWidth *
+                                                0.06, // ~24px on 400px width
+                                            height:
+                                                screenWidth *
+                                                0.06, // ~24px on 400px width
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 color:
                                                     selectedCategory == cat
                                                         ? const Color(
-                                                          0xFF276EFF,
+                                                          0xFF007AFF,
                                                         )
-                                                        : Colors.white38,
+                                                        : isDark
+                                                        ? Colors.white38
+                                                        : const Color(
+                                                          0xFFCCCCCC,
+                                                        ),
                                                 width: 2,
                                               ),
                                               color:
                                                   selectedCategory == cat
-                                                      ? const Color(0xFF276EFF)
+                                                      ? const Color(0xFF007AFF)
                                                       : Colors.transparent,
                                             ),
                                             child:
                                                 selectedCategory == cat
-                                                    ? const Icon(
+                                                    ? Icon(
                                                       Icons.check,
-                                                      color: Colors.white,
-                                                      size: 16,
+                                                      color:
+                                                          isDark
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                0xFF000000,
+                                                              ),
+                                                      size:
+                                                          screenWidth *
+                                                          0.04, // ~16px on 400px width
                                                     )
                                                     : null,
                                           ),
@@ -728,79 +925,135 @@ class _IchHelfeGernContent extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: screenHeight * 0.02,
+                              ), // ~16px on 800px height
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Sortieren von',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
+                                    color:
+                                        isDark
+                                            ? Colors.white
+                                            : const Color(0xFF000000),
+                                    fontSize:
+                                        screenWidth *
+                                        0.04, // ~16px on 400px width
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(
+                                height: screenHeight * 0.01,
+                              ), // ~8px on 800px height
                               Row(
                                 children: [
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            screenHeight *
+                                            0.015, // ~12px on 800px height
                                       ),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF1A1A1A),
-                                        borderRadius: BorderRadius.circular(15),
+                                        color:
+                                            isDark
+                                                ? const Color(0xFF1A1A1A)
+                                                : const Color(0xFFF2F2F2),
+                                        borderRadius: BorderRadius.circular(
+                                          screenWidth * 0.0375,
+                                        ), // ~15px on 400px width
                                       ),
                                       alignment: Alignment.center,
-                                      child: const Text(
+                                      child: Text(
                                         'Neu zu Alt',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color:
+                                              isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF000000),
+                                          fontSize:
+                                              screenWidth *
+                                              0.04, // ~16px on 400px width
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(
+                                    width: screenWidth * 0.02,
+                                  ), // ~8px on 400px width
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            screenHeight *
+                                            0.015, // ~12px on 800px height
                                       ),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF1A1A1A),
-                                        borderRadius: BorderRadius.circular(15),
+                                        color:
+                                            isDark
+                                                ? const Color(0xFF1A1A1A)
+                                                : const Color(0xFFF2F2F2),
+                                        borderRadius: BorderRadius.circular(
+                                          screenWidth * 0.0375,
+                                        ), // ~15px on 400px width
                                       ),
                                       alignment: Alignment.center,
-                                      child: const Text(
+                                      child: Text(
                                         'Alt zu Neu',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color:
+                                              isDark
+                                                  ? Colors.white
+                                                  : const Color(0xFF000000),
+                                          fontSize:
+                                              screenWidth *
+                                              0.04, // ~16px on 400px width
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: screenHeight * 0.02,
+                              ), // ~16px on 800px height
                               SizedBox(
                                 width: double.infinity,
                                 child: OutlinedButton(
                                   onPressed: () {},
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF276EFF),
-                                    foregroundColor: Colors.white,
+                                    backgroundColor:
+                                        isDark
+                                            ? const Color(0xFF1A1A1A)
+                                            : const Color(0xFFF2F2F2),
+                                    foregroundColor: const Color(0xFF007AFF),
                                     side: const BorderSide(
-                                      color: Color(0xFF276EFF),
+                                      color: Color(0xFF007AFF),
                                     ),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(
+                                        screenWidth * 0.0375,
+                                      ), // ~15px on 400px width
                                     ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 14,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          screenHeight *
+                                          0.0175, // ~14px on 800px height
                                     ),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     'Kartenansicht',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          isDark
+                                              ? Colors.white
+                                              : const Color(0xFF000000),
                                       fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          screenWidth *
+                                          0.04, // ~16px on 400px width
                                     ),
                                   ),
                                 ),
@@ -913,7 +1166,7 @@ class _HilfeSuchenContent extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF276EFF),
+              backgroundColor: const Color(0xFF007AFF),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
