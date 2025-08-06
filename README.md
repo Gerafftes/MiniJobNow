@@ -29,7 +29,7 @@
 
 - **Mobile App:** Flutter (für iOS und Android)
 - **Website:** HTML/CSS, JavaScript
-- **Backend:** REST-API, sichere Zahlungsschnittstellen
+- **Backend:** Supabase
 
 ---
 
