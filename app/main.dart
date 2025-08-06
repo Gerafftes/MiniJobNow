@@ -1,5 +1,14 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'pages/start-tab/ich_helfe_gerne.dart';
+import 'pages/start-tab/hilfe_suchen.dart';
+import 'pages/start-tab/ich_biete_an.dart';
+import 'pages/profile_tab.dart';
+import 'pages/support_tab.dart';
+import 'widgets/home_action_button.dart';
+import 'widgets/shake_overlay.dart';
+import 'services/shake_detector.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,208 +23,379 @@ class MyApp extends StatelessWidget {
       title: 'MiniJobNow',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF007AFF)),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+  int _bottomNavIndex = 0;
+  int _mainTabIndex = 0;
+  String _themeMode = 'auto'; // 'light', 'auto', 'dark'
+  bool _showShakeOverlay = false;
+  ShakeDetector? _shakeDetector;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
+    _loadThemePreference();
+    _initializeShakeDetector();
+  }
+
+  void _initializeShakeDetector() {
+    _shakeDetector = ShakeDetector(
+      onShake: () {
+        if (mounted) {
+          setState(() {
+            _showShakeOverlay = true;
+          });
+        }
+      },
     );
+    _shakeDetector!.startListening();
+  }
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
-    );
-
-    _animationController.forward();
-
-    // Navigate to main app after 1.5 seconds
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder:
-                (context, animation, secondaryAnimation) => const HomeScreen(),
-            transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-            ) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            transitionDuration: const Duration(milliseconds: 500),
-          ),
-        );
-      }
+  void _dismissShakeOverlay() {
+    setState(() {
+      _showShakeOverlay = false;
     });
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _shakeDetector = null;
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue.shade50,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade100, Colors.blue.shade50],
-          ),
-        ),
-        child: Center(
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return FadeTransition(
-                opacity: _fadeAnimation,
-                child: ScaleTransition(
-                  scale: _scaleAnimation,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // App Icon/Logo
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.3),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.work,
-                          size: 60,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-
-                      // App Name
-                      Text(
-                        'MiniJobNow',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue.shade800,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Tagline
-                      Text(
-                        'Finde deinen perfekten Mini-Job',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.blue.shade600,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      const SizedBox(height: 50),
-
-                      // Loading indicator
-                      SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.blue.shade400,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+  Future<void> _loadThemePreference() async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter++;
+      _themeMode = prefs.getString('theme_mode') ?? 'auto';
     });
   }
 
+  Future<void> _saveThemePreference(String themeMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme_mode', themeMode);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+    final bool isDark =
+        _themeMode == 'auto'
+            ? MediaQuery.of(context).platformBrightness == Brightness.dark
+            : _themeMode == 'dark';
+    final Color bgColor = isDark ? Colors.black : const Color(0xFFE6E6E6);
+    final Color cardColor =
+        isDark
+            ? const Color(0xFF0D0D0D)
+            : const Color(0xFFF2F2F2); // Nicht ausgewählt
+    final Color cardColorActive =
+        isDark ? const Color(0xFF1A1A1A) : Colors.white; // Ausgewählt
+    final Color borderColor =
+        isDark
+            ? const Color.fromRGBO(255, 255, 255, 0.18)
+            : const Color(0xFFCCCCCC);
+    final Color secondaryText =
+        isDark
+            ? const Color.fromRGBO(255, 255, 255, 0.7)
+            : const Color.fromRGBO(13, 13, 13, 0.7);
+    final Color jobCardColor = isDark ? cardColor : const Color(0xFFF2F2F2);
+    final Color jobButtonColor =
+        isDark ? const Color(0xFF1A1A1A) : Colors.white;
+    final Color textColor =
+        isDark ? const Color(0xFFF2F2F2) : const Color(0xFF0D0D0D);
+    final Color timeTextColor =
+        isDark ? const Color(0xFFB3B3B3) : const Color(0xFF4D4D4D);
+    final Color bellIconColor = isDark ? Colors.white : const Color(0xFF0D0D0D);
+    final Color homeActionIconColor =
+        isDark ? Colors.white : const Color(0xFF1A1A1A);
+
+    Widget content;
+    switch (selectedIndex) {
+      case 0:
+        content = IchHelfeGerneContent(
+          cardColor: cardColor,
+          secondaryText: secondaryText,
+          borderColor: borderColor,
+          textColor: textColor,
+          jobCardColor: jobCardColor,
+          jobButtonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          filterIconColor: bellIconColor,
+          themeMode: _themeMode,
+        );
+        break;
+      case 1:
+        content = HilfeSuchenContent(
+          cardColor: cardColor,
+          secondaryText: secondaryText,
+          borderColor: borderColor,
+          textColor: textColor,
+        );
+        break;
+      case 2:
+        content = IchBieteAnContent(
+          cardColor: cardColor,
+          secondaryText: secondaryText,
+          borderColor: borderColor,
+          textColor: textColor,
+        );
+        break;
+      default:
+        content = const SizedBox();
+    }
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'SF Pro'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        color: bgColor,
+        child: Scaffold(
+          backgroundColor: bgColor,
+          extendBody: true,
+          appBar: AppBar(
+            backgroundColor: bgColor,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.notifications_none,
+                color: bellIconColor,
+                size: 28,
+              ),
+              onPressed: () => setState(() => _bottomNavIndex = 3),
             ),
-          ],
+            title: Text(
+              'MiniJobNow',
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+              ),
+            ),
+            centerTitle: true,
+            actions: [
+              GestureDetector(
+                onTap: () => setState(() => _bottomNavIndex = 2),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
+                    backgroundColor: cardColor,
+                    radius: 20,
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          body: Stack(
+            children: [
+              IndexedStack(
+                index: _bottomNavIndex,
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 92,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 16),
+                          // Drei große Buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              HomeActionButton(
+                                iconPath: 'assets/icons/Artboard 2.svg',
+                                label: 'Ich helfe\ngerne',
+                                color:
+                                    selectedIndex == 0
+                                        ? cardColorActive
+                                        : cardColor,
+                                onTap: () => setState(() => selectedIndex = 0),
+                                isSelected: selectedIndex == 0,
+                                textColor: textColor,
+                                iconColor: homeActionIconColor,
+                              ),
+                              HomeActionButton(
+                                iconPath: 'assets/icons/Artboard 1.svg',
+                                label: 'Hilfe\nsuchen',
+                                color:
+                                    selectedIndex == 1
+                                        ? cardColorActive
+                                        : cardColor,
+                                onTap: () => setState(() => selectedIndex = 1),
+                                isSelected: selectedIndex == 1,
+                                textColor: textColor,
+                                iconColor: homeActionIconColor,
+                              ),
+                              HomeActionButton(
+                                iconPath: 'assets/icons/Artboard 3.svg',
+                                label: 'Ich biete\nan',
+                                color:
+                                    selectedIndex == 2
+                                        ? cardColorActive
+                                        : cardColor,
+                                onTap: () => setState(() => selectedIndex = 2),
+                                isSelected: selectedIndex == 2,
+                                textColor: textColor,
+                                iconColor: homeActionIconColor,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 28),
+                          content,
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SupportTabContent(),
+                  ProfileTabContent(
+                    textColor: textColor,
+                    cardColor: cardColor,
+                    themeMode: _themeMode,
+                    onThemeChanged: (String newThemeMode) async {
+                      setState(() {
+                        _themeMode = newThemeMode;
+                      });
+                      await _saveThemePreference(newThemeMode);
+                    },
+                  ),
+                  Center(
+                    child: Text(
+                      'Notifications',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              ShakeOverlay(
+                isVisible: _showShakeOverlay,
+                onDismiss: _dismissShakeOverlay,
+              ),
+            ],
+          ),
+          bottomNavigationBar: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: isDark ? 5 : 3,
+                    sigmaY: isDark ? 5 : 3,
+                  ),
+                  child: Container(
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color:
+                          isDark
+                              ? Colors.white.withOpacity(0.3)
+                              : const Color(0xFFCCCCCC).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        canvasColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        // Farben für die BottomNavigationBar anpassen
+                        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                          selectedItemColor:
+                              isDark ? Colors.white : const Color(0xFF000000),
+                          unselectedItemColor:
+                              isDark
+                                  ? const Color.fromARGB(153, 255, 255, 255)
+                                  : const Color(0xFF333333),
+                          selectedLabelStyle: TextStyle(
+                            color:
+                                isDark ? Colors.white : const Color(0xFF000000),
+                          ),
+                          unselectedLabelStyle: TextStyle(
+                            color:
+                                isDark
+                                    ? const Color.fromARGB(153, 255, 255, 255)
+                                    : const Color(0xFF333333),
+                          ),
+                        ),
+                      ),
+                      child: BottomNavigationBar(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        // Farben werden jetzt über das Theme gesetzt
+                        showSelectedLabels: true,
+                        showUnselectedLabels: true,
+                        items: const [
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.home),
+                            label: 'Start',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.headset),
+                            label: 'Support',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline),
+                            label: 'Profil',
+                          ),
+                        ],
+                        currentIndex:
+                            _bottomNavIndex < 3
+                                ? _bottomNavIndex
+                                : _mainTabIndex,
+                        onTap: (index) {
+                          setState(() {
+                            if (index == 0 && _bottomNavIndex == 0) {
+                              // Bereits auf Start, aber evtl. nicht auf "Ich helfe gerne"
+                              selectedIndex = 0;
+                            } else {
+                              _bottomNavIndex = index;
+                              if (index < 3) _mainTabIndex = index;
+                            }
+                          });
+                        },
+                        type: BottomNavigationBarType.fixed,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
