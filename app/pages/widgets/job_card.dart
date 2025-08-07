@@ -8,6 +8,7 @@ class JobCard extends StatelessWidget {
   final Color textColor;
   final Color buttonColor;
   final Color timeTextColor;
+  final Color buttonTextColor;
 
   const JobCard({
     super.key,
@@ -18,43 +19,55 @@ class JobCard extends StatelessWidget {
     required this.textColor,
     required this.buttonColor,
     required this.timeTextColor,
+    required this.buttonTextColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.fromLTRB(18, 15, 18, 10),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 10.5),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: timeTextColor,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  time,
-                  style: TextStyle(color: timeTextColor, fontSize: 14),
-                ),
-                const SizedBox(height: 8),
                 Text(
                   price,
                   style: TextStyle(
                     color: textColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    height: 1.4,
                   ),
                 ),
               ],
@@ -77,7 +90,10 @@ class JobCard extends StatelessWidget {
                 elevation: 0,
               ),
               onPressed: () {},
-              child: Text('Job annehmen', style: TextStyle(color: textColor)),
+              child: Text(
+                'Job annehmen',
+                style: TextStyle(color: buttonTextColor),
+              ),
             ),
           ),
         ],
