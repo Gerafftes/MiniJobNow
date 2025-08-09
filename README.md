@@ -21,7 +21,7 @@
 
 | Dark Mode | Light Mode |
 |-----------|------------|
-| <img src="img/dark.png" alt="Dark Mode" width="300"/> | <img src="img/light.png" alt="Light Mode" width="300"/> |
+| <img src="img/dark.PNG" alt="Dark Mode" width="300"/> | <img src="img/light.PNG" alt="Light Mode" width="300"/> |
 
 ---
 
