@@ -31,7 +31,7 @@ class IchBieteAnContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Teile, was du gut kannst.',
+                'Dienste direkt buchen.',
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class IchBieteAnContent extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Erstelle feste Angebote für deine Dienstleistungen oder finde Anbieter für genau das, was du suchst.',
+                'Finde dauerhafte Dienstleistungen in deiner Nähe und kontaktiere die Anbieter:innen direkt – ohne selbst einen Auftrag einstellen zu müssen.',
                 style: TextStyle(
                   color: secondaryText,
                   fontSize: 15,
