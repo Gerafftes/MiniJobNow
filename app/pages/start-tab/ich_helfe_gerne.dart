@@ -12,6 +12,7 @@ class IchHelfeGerneContent extends StatelessWidget {
   final Color timeTextColor;
   final Color filterIconColor;
   final String themeMode;
+  final Color buttonTextColor;
 
   const IchHelfeGerneContent({
     super.key,
@@ -24,6 +25,7 @@ class IchHelfeGerneContent extends StatelessWidget {
     required this.timeTextColor,
     required this.filterIconColor,
     required this.themeMode,
+    required this.buttonTextColor,
   });
 
   @override
@@ -43,7 +45,7 @@ class IchHelfeGerneContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Finde spontane Jobs in deiner Nähe.',
+                'Finde Jobs in deiner Nähe.',
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,
@@ -52,7 +54,7 @@ class IchHelfeGerneContent extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Verdiene flexibel Geld, indem du anderen bei kleinen Aufgaben hilfst – vom Einkauf bis zur Rasenpflege.',
+                'Übernimm Aufträge und verdiene flexibel Geld – vom Einkaufen bis zur Gartenarbeit.',
                 style: TextStyle(
                   color: secondaryText,
                   fontSize: 15,
@@ -541,7 +543,7 @@ class IchHelfeGerneContent extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         JobCard(
           title: 'Gassi gehen',
           time: 'Heute, 14:00',
@@ -550,6 +552,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           textColor: textColor,
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
         ),
         const SizedBox(height: 12),
         JobCard(
@@ -560,6 +563,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           textColor: textColor,
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
         ),
         const SizedBox(height: 12),
         JobCard(
@@ -570,6 +574,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           textColor: textColor,
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
         ),
       ],
     );
