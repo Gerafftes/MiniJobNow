@@ -1,10 +1,11 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:flutter/services.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/start-tab/ich_helfe_gerne.dart';
-import 'pages/start-tab/hilfe_suchen.dart';
-import 'pages/start-tab/ich_biete_an.dart';
+import 'pages/start-tab/erstellen.dart';
+import 'pages/start-tab/feste_angebote.dart';
 import 'pages/profile_tab.dart';
 import 'pages/support_tab.dart';
 import 'widgets/home_action_button.dart';
@@ -128,6 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final Color bellIconColor = isDark ? Colors.white : const Color(0xFF0D0D0D);
     final Color homeActionIconColor =
         isDark ? Colors.white : const Color(0xFF1A1A1A);
+    final Color buttonTextColor =
+        isDark ? const Color(0xFFF2F2F2) : const Color(0xFF0D0D0D);
 
     Widget content;
     switch (selectedIndex) {
@@ -142,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
           timeTextColor: timeTextColor,
           filterIconColor: bellIconColor,
           themeMode: _themeMode,
+          buttonTextColor: buttonTextColor,
         );
         break;
       case 1:
@@ -162,6 +166,23 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       default:
         content = const SizedBox();
+    }
+
+    Widget withPullToRefresh(Widget child, {EdgeInsetsGeometry? padding}) {
+      final Widget scrollable = SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        padding: padding,
+        child: child,
+      );
+
+      // Keep the organic stretch/bounce, but remove the spinner animation
+      // by omitting RefreshIndicator.
+      return StretchingOverscrollIndicator(
+        axisDirection: AxisDirection.down,
+        child: scrollable,
+      );
     }
 
     return Theme(
@@ -217,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
               IndexedStack(
                 index: _bottomNavIndex,
                 children: [
-                  SingleChildScrollView(
-                    child: Padding(
+                  withPullToRefresh(
+                    Padding(
                       padding: const EdgeInsets.only(
                         bottom: 92,
                         left: 16.0,
@@ -234,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               HomeActionButton(
                                 iconPath: 'assets/icons/Artboard 2.svg',
-                                label: 'Ich helfe\ngerne',
+                                label: 'Ich helfe\ngern',
                                 color:
                                     selectedIndex == 0
                                         ? cardColorActive
@@ -245,8 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 iconColor: homeActionIconColor,
                               ),
                               HomeActionButton(
-                                iconPath: 'assets/icons/Artboard 1.svg',
-                                label: 'Hilfe\nsuchen',
+                                iconPath: 'assets/icons/Artboard 3.svg',
+                                label: 'Aufträge\nErstellen',
                                 color:
                                     selectedIndex == 1
                                         ? cardColorActive
@@ -257,8 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 iconColor: homeActionIconColor,
                               ),
                               HomeActionButton(
-                                iconPath: 'assets/icons/Artboard 3.svg',
-                                label: 'Ich biete\nan',
+                                iconPath: 'assets/icons/Artboard 1.svg',
+                                label: 'Feste\nAngebote',
                                 color:
                                     selectedIndex == 2
                                         ? cardColorActive
@@ -276,18 +297,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
+                    padding: EdgeInsets.zero,
                   ),
-                  const SupportTabContent(),
-                  ProfileTabContent(
-                    textColor: textColor,
-                    cardColor: cardColor,
-                    themeMode: _themeMode,
-                    onThemeChanged: (String newThemeMode) async {
-                      setState(() {
-                        _themeMode = newThemeMode;
-                      });
-                      await _saveThemePreference(newThemeMode);
-                    },
+                  withPullToRefresh(
+                    const SupportTabContent(),
+                    padding: const EdgeInsets.only(
+                      bottom: 92,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                  ),
+                  withPullToRefresh(
+                    ProfileTabContent(
+                      textColor: textColor,
+                      cardColor: cardColor,
+                      themeMode: _themeMode,
+                      onThemeChanged: (String newThemeMode) async {
+                        setState(() {
+                          _themeMode = newThemeMode;
+                        });
+                        await _saveThemePreference(newThemeMode);
+                      },
+                    ),
+                    padding: const EdgeInsets.only(
+                      bottom: 92,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
                   ),
                   Center(
                     child: Text(
@@ -312,91 +348,99 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(32),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: isDark ? 5 : 3,
-                    sigmaY: isDark ? 5 : 3,
-                  ),
-                  child: Container(
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color:
-                          isDark
-                              ? Colors.white.withOpacity(0.3)
-                              : const Color(0xFFCCCCCC).withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(32),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                borderRadius: BorderRadius.circular(36),
+                child: SizedBox(
+                  height: 64,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                        child: const SizedBox(),
+                      ),
+                      LiquidGlass(
+                        clipBehavior: Clip.antiAlias,
+                        shape: const LiquidRoundedSuperellipse(
+                          borderRadius: Radius.circular(36),
                         ),
-                      ],
-                    ),
-                    child: Theme(
-                      data: Theme.of(context).copyWith(
-                        canvasColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        // Farben für die BottomNavigationBar anpassen
-                        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                          selectedItemColor:
-                              isDark ? Colors.white : const Color(0xFF000000),
-                          unselectedItemColor:
-                              isDark
-                                  ? const Color.fromARGB(153, 255, 255, 255)
-                                  : const Color(0xFF333333),
-                          selectedLabelStyle: TextStyle(
-                            color:
-                                isDark ? Colors.white : const Color(0xFF000000),
+                        glassContainsChild: false,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            bottomNavigationBarTheme:
+                                BottomNavigationBarThemeData(
+                                  selectedItemColor:
+                                      isDark
+                                          ? Colors.white
+                                          : const Color(0xFF000000),
+                                  unselectedItemColor:
+                                      isDark
+                                          ? const Color.fromARGB(
+                                            153,
+                                            255,
+                                            255,
+                                            255,
+                                          )
+                                          : const Color(0xFF333333),
+                                  selectedLabelStyle: TextStyle(
+                                    color:
+                                        isDark
+                                            ? Colors.white
+                                            : const Color(0xFF000000),
+                                  ),
+                                  unselectedLabelStyle: TextStyle(
+                                    color:
+                                        isDark
+                                            ? const Color.fromARGB(
+                                              153,
+                                              255,
+                                              255,
+                                              255,
+                                            )
+                                            : const Color(0xFF333333),
+                                  ),
+                                ),
                           ),
-                          unselectedLabelStyle: TextStyle(
-                            color:
-                                isDark
-                                    ? const Color.fromARGB(153, 255, 255, 255)
-                                    : const Color(0xFF333333),
+                          child: BottomNavigationBar(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            showSelectedLabels: true,
+                            showUnselectedLabels: true,
+                            items: const [
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.home),
+                                label: 'Start',
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.headset),
+                                label: 'Support',
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.person_outline),
+                                label: 'Profil',
+                              ),
+                            ],
+                            currentIndex:
+                                _bottomNavIndex < 3
+                                    ? _bottomNavIndex
+                                    : _mainTabIndex,
+                            onTap: (index) {
+                              setState(() {
+                                if (index == 0 && _bottomNavIndex == 0) {
+                                  selectedIndex = 0;
+                                } else {
+                                  _bottomNavIndex = index;
+                                  if (index < 3) _mainTabIndex = index;
+                                }
+                              });
+                            },
+                            type: BottomNavigationBarType.fixed,
                           ),
                         ),
                       ),
-                      child: BottomNavigationBar(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        // Farben werden jetzt über das Theme gesetzt
-                        showSelectedLabels: true,
-                        showUnselectedLabels: true,
-                        items: const [
-                          BottomNavigationBarItem(
-                            icon: Icon(Icons.home),
-                            label: 'Start',
-                          ),
-                          BottomNavigationBarItem(
-                            icon: Icon(Icons.headset),
-                            label: 'Support',
-                          ),
-                          BottomNavigationBarItem(
-                            icon: Icon(Icons.person_outline),
-                            label: 'Profil',
-                          ),
-                        ],
-                        currentIndex:
-                            _bottomNavIndex < 3
-                                ? _bottomNavIndex
-                                : _mainTabIndex,
-                        onTap: (index) {
-                          setState(() {
-                            if (index == 0 && _bottomNavIndex == 0) {
-                              // Bereits auf Start, aber evtl. nicht auf "Ich helfe gerne"
-                              selectedIndex = 0;
-                            } else {
-                              _bottomNavIndex = index;
-                              if (index < 3) _mainTabIndex = index;
-                            }
-                          });
-                        },
-                        type: BottomNavigationBarType.fixed,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ),
