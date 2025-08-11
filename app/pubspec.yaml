@@ -14,6 +14,7 @@ dependencies:
   shared_preferences: ^2.2.2
   sensors_plus: ^4.0.2
   flutter_native_splash: ^2.4.6
+  liquid_glass_renderer: ^0.1.1-dev.10
 
 dev_dependencies:
   flutter_test:
