@@ -154,6 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
           secondaryText: secondaryText,
           borderColor: borderColor,
           textColor: textColor,
+          jobCardColor: jobCardColor,
+          jobButtonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
         );
         break;
       case 2:
@@ -162,6 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
           secondaryText: secondaryText,
           borderColor: borderColor,
           textColor: textColor,
+          jobCardColor: jobCardColor,
+          jobButtonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
         );
         break;
       default:
