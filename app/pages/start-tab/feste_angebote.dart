@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../widgets/job_card.dart';
 
 class IchBieteAnContent extends StatelessWidget {
   final Color cardColor;
   final Color secondaryText;
   final Color borderColor;
   final Color textColor;
+  final Color jobCardColor;
+  final Color jobButtonColor;
+  final Color timeTextColor;
+  final Color buttonTextColor;
 
   const IchBieteAnContent({
     super.key,
@@ -12,6 +17,10 @@ class IchBieteAnContent extends StatelessWidget {
     required this.secondaryText,
     required this.borderColor,
     required this.textColor,
+    required this.jobCardColor,
+    required this.jobButtonColor,
+    required this.timeTextColor,
+    required this.buttonTextColor,
   });
 
   @override
@@ -51,7 +60,50 @@ class IchBieteAnContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 28),
-        // Weitere Inhalte ...
+        Text(
+          'In deiner Nähe',
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        const SizedBox(height: 12),
+        JobCard(
+          title: 'Haushaltshilfe',
+          time: 'Heute zwischen 15-18 Uhr',
+          price: '15 €/Std',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
+          buttonLabel: 'Buchen',
+        ),
+        const SizedBox(height: 12),
+        JobCard(
+          title: 'Gartenpflege',
+          time: 'Morgen zwischen 15-18 Uhr',
+          price: '25 €/Std',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
+          buttonLabel: 'Buchen',
+        ),
+        const SizedBox(height: 12),
+        JobCard(
+          title: 'Nachhilfe',
+          time: 'Mo/Di/Fr 13-14 Uhr',
+          price: '20 €/Std',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: jobButtonColor,
+          timeTextColor: timeTextColor,
+          buttonTextColor: buttonTextColor,
+          buttonLabel: 'Buchen',
+        ),
       ],
     );
   }
