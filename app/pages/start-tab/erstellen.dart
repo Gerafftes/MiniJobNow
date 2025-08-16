@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../widgets/job_card.dart';
 
 class HilfeSuchenContent extends StatelessWidget {
   final Color cardColor;
   final Color secondaryText;
   final Color borderColor;
   final Color textColor;
+  final Color jobCardColor;
+  final Color jobButtonColor;
+  final Color timeTextColor;
+  final Color buttonTextColor;
 
   const HilfeSuchenContent({
     super.key,
@@ -12,6 +17,10 @@ class HilfeSuchenContent extends StatelessWidget {
     required this.secondaryText,
     required this.borderColor,
     required this.textColor,
+    required this.jobCardColor,
+    required this.jobButtonColor,
+    required this.timeTextColor,
+    required this.buttonTextColor,
   });
 
   @override
@@ -129,7 +138,42 @@ class HilfeSuchenContent extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        SizedBox(height: h(0.0345)),
+        SizedBox(height: h(0.02)),
+        JobCard(
+          title: 'Gassi gehen',
+          time: 'Heute, 14:00',
+          price: '10 €',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: const Color(0xFFD6543D),
+          timeTextColor: timeTextColor,
+          buttonTextColor: Colors.white,
+          buttonLabel: 'Cancel',
+        ),
+        SizedBox(height: h(0.015)),
+        JobCard(
+          title: 'Einkaufshilfe',
+          time: 'Heute, 15:00',
+          price: '12 €',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: const Color(0xFFD6543D),
+          timeTextColor: timeTextColor,
+          buttonTextColor: Colors.white,
+          buttonLabel: 'Cancel',
+        ),
+        SizedBox(height: h(0.015)),
+        JobCard(
+          title: 'Paket abholen',
+          time: 'Heute, 16:30',
+          price: '8 €',
+          color: jobCardColor,
+          textColor: textColor,
+          buttonColor: const Color(0xFFD6543D),
+          timeTextColor: timeTextColor,
+          buttonTextColor: Colors.white,
+          buttonLabel: 'Cancel',
+        ),
       ],
     );
   }
