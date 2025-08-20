@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/job_card.dart';
 
-class HilfeSuchenContent extends StatelessWidget {
+class HilfeSuchenContent extends StatefulWidget {
   final Color cardColor;
   final Color secondaryText;
   final Color borderColor;
@@ -24,6 +24,13 @@ class HilfeSuchenContent extends StatelessWidget {
   });
 
   @override
+  State<HilfeSuchenContent> createState() => _HilfeSuchenContentState();
+}
+
+class _HilfeSuchenContentState extends State<HilfeSuchenContent> {
+  bool isLaufendSelected = true; // Default to "Laufend" selected
+
+  @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenHeight = screenSize.height;
@@ -41,7 +48,7 @@ class HilfeSuchenContent extends StatelessWidget {
           padding: EdgeInsets.all(blockPadding),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(cornerRadius),
-            border: Border.all(color: borderColor, width: 2),
+            border: Border.all(color: widget.borderColor, width: 2),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,16 +56,16 @@ class HilfeSuchenContent extends StatelessWidget {
               Text(
                 'Was möchtest du erstellen?',
                 style: TextStyle(
-                  color: textColor,
+                  color: widget.textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Erstelle entweder einen einmaligen Auftrag oder biete eine dauerhafte Dienstleistung an.',
+                'Erstelle einen einmaligen Auftrag oder biete eine dauerhafte Dienstleistung an.',
                 style: TextStyle(
-                  color: secondaryText,
+                  color: widget.secondaryText,
                   fontSize: 15,
                   height: 1.4,
                 ),
@@ -89,19 +96,8 @@ class HilfeSuchenContent extends StatelessWidget {
         ),
         SizedBox(height: h(0.01)),
         Text(
-          'Und Hilfe erhalten',
-          style: TextStyle(color: secondaryText, fontSize: 14),
-        ),
-        SizedBox(height: h(0.02)),
-        Center(
-          child: Text(
-            'Oder',
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-          ),
+          'Erscheint in ‚Ich helfe gern‘',
+          style: TextStyle(color: widget.secondaryText, fontSize: 14),
         ),
         SizedBox(height: h(0.02)),
         SizedBox(
@@ -126,28 +122,86 @@ class HilfeSuchenContent extends StatelessWidget {
         ),
         SizedBox(height: h(0.01)),
         Text(
-          'Und Geld verdienen',
-          style: TextStyle(color: secondaryText, fontSize: 14),
+          'Erscheint in ‚Feste Angebote‘',
+          style: TextStyle(color: widget.secondaryText, fontSize: 14),
         ),
         SizedBox(height: h(0.02)),
         Text(
           'Deine Aufträge',
           style: TextStyle(
-            color: textColor,
+            color: widget.textColor,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
+        ),
+        SizedBox(height: h(0.02)),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isLaufendSelected = true;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isLaufendSelected
+                          ? const Color(0xFF1A1A1A)
+                          : const Color(0xFF0D0D0D),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(cornerRadius),
+                  ),
+                  minimumSize: Size.fromHeight(h(0.05)),
+                  elevation: 0,
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: const Text('Laufend'),
+              ),
+            ),
+            SizedBox(width: screenWidth * 0.02),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isLaufendSelected = false;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isLaufendSelected
+                          ? const Color(0xFF0D0D0D)
+                          : const Color(0xFF1A1A1A),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(cornerRadius),
+                  ),
+                  minimumSize: Size.fromHeight(h(0.05)),
+                  elevation: 0,
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: const Text('Abgeschlossen'),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: h(0.02)),
         JobCard(
           title: 'Gassi gehen',
           time: 'Heute, 14:00',
           price: '10 €',
-          color: jobCardColor,
-          textColor: textColor,
-          buttonColor: const Color(0xFFD6543D),
-          timeTextColor: timeTextColor,
-          buttonTextColor: Colors.white,
+          color: widget.jobCardColor,
+          textColor: widget.textColor,
+          buttonColor: widget.jobButtonColor,
+          timeTextColor: widget.timeTextColor,
+          buttonTextColor: widget.buttonTextColor,
           buttonLabel: 'Cancel',
         ),
         SizedBox(height: h(0.015)),
@@ -155,11 +209,11 @@ class HilfeSuchenContent extends StatelessWidget {
           title: 'Einkaufshilfe',
           time: 'Heute, 15:00',
           price: '12 €',
-          color: jobCardColor,
-          textColor: textColor,
-          buttonColor: const Color(0xFFD6543D),
-          timeTextColor: timeTextColor,
-          buttonTextColor: Colors.white,
+          color: widget.jobCardColor,
+          textColor: widget.textColor,
+          buttonColor: widget.jobButtonColor,
+          timeTextColor: widget.timeTextColor,
+          buttonTextColor: widget.buttonTextColor,
           buttonLabel: 'Cancel',
         ),
         SizedBox(height: h(0.015)),
@@ -167,11 +221,11 @@ class HilfeSuchenContent extends StatelessWidget {
           title: 'Paket abholen',
           time: 'Heute, 16:30',
           price: '8 €',
-          color: jobCardColor,
-          textColor: textColor,
-          buttonColor: const Color(0xFFD6543D),
-          timeTextColor: timeTextColor,
-          buttonTextColor: Colors.white,
+          color: widget.jobCardColor,
+          textColor: widget.textColor,
+          buttonColor: widget.jobButtonColor,
+          timeTextColor: widget.timeTextColor,
+          buttonTextColor: widget.buttonTextColor,
           buttonLabel: 'Cancel',
         ),
       ],
