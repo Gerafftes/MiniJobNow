@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class JobCard extends StatelessWidget {
   final String title;
@@ -9,6 +10,8 @@ class JobCard extends StatelessWidget {
   final Color buttonColor;
   final Color timeTextColor;
   final Color buttonTextColor;
+  final String buttonLabel;
+  final bool showVerified;
 
   const JobCard({
     super.key,
@@ -20,6 +23,8 @@ class JobCard extends StatelessWidget {
     required this.buttonColor,
     required this.timeTextColor,
     required this.buttonTextColor,
+    this.buttonLabel = 'Job annehmen',
+    this.showVerified = false,
   });
 
   @override
@@ -42,13 +47,29 @@ class JobCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                        if (showVerified) ...[
+                          const SizedBox(width: 6),
+                          SvgPicture.asset(
+                            'assets/icons/verified.svg',
+                            width: 16,
+                            height: 16,
+                            colorFilter: ColorFilter.mode(
+                              textColor,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                     const SizedBox(height: 10.5),
                     Text(
@@ -91,7 +112,7 @@ class JobCard extends StatelessWidget {
               ),
               onPressed: () {},
               child: Text(
-                'Job annehmen',
+                buttonLabel,
                 style: TextStyle(color: buttonTextColor),
               ),
             ),
