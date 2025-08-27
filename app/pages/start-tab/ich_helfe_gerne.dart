@@ -553,6 +553,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
           buttonTextColor: buttonTextColor,
+          showVerified: true,
         ),
         const SizedBox(height: 12),
         JobCard(
@@ -564,6 +565,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
           buttonTextColor: buttonTextColor,
+          showVerified: true,
         ),
         const SizedBox(height: 12),
         JobCard(
@@ -575,6 +577,7 @@ class IchHelfeGerneContent extends StatelessWidget {
           buttonColor: jobButtonColor,
           timeTextColor: timeTextColor,
           buttonTextColor: buttonTextColor,
+          showVerified: true,
         ),
       ],
     );
