@@ -63,8 +63,8 @@ class JobCard extends StatelessWidget {
                             'assets/icons/verified.svg',
                             width: 16,
                             height: 16,
-                            colorFilter: ColorFilter.mode(
-                              textColor,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFFFFD700),
                               BlendMode.srcIn,
                             ),
                           ),
