@@ -5,7 +5,7 @@ class JobCard extends StatelessWidget {
   final String title;
   final String time;
   final String price;
-  final String distance;
+  final String? distance;
   final Color color;
   final Color textColor;
   final Color buttonColor;
@@ -19,7 +19,7 @@ class JobCard extends StatelessWidget {
     required this.title,
     required this.time,
     required this.price,
-    required this.distance,
+    this.distance,
     required this.color,
     required this.textColor,
     required this.buttonColor,
@@ -77,23 +77,25 @@ class JobCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          distance,
+                          distance ?? '',
                           style: TextStyle(
                             color: timeTextColor,
                             fontSize: 14,
                             height: 1.4,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '|',
-                          style: TextStyle(
-                            color: timeTextColor,
-                            fontSize: 14,
-                            height: 1.4,
+                        if (distance != null) ...[
+                          const SizedBox(width: 8),
+                          Text(
+                            '|',
+                            style: TextStyle(
+                              color: timeTextColor,
+                              fontSize: 14,
+                              height: 1.4,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
+                          const SizedBox(width: 8),
+                        ],
                         Text(
                           time,
                           style: TextStyle(
