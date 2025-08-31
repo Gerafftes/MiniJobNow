@@ -222,21 +222,7 @@ mobileNavLinks.forEach(link => {
     });
 });
 
-// Header scroll effect
-const header = document.querySelector('.header');
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > window.innerHeight * 0.9) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
-
-// Initialize header state
-if (window.scrollY > window.innerHeight * 0.7) {
-    header.classList.add('scrolled');
-}
 
 // Additional animations
 const fadeElements = document.querySelectorAll('.fade-up');
